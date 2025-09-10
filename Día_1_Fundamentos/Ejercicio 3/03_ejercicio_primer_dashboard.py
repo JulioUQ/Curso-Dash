@@ -2,7 +2,7 @@ import sys
 import os
 
 # Sube dos niveles desde /Día_1_Fundamentos/Ejercicio 3/
-root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(root_dir)
 
 # Importa las funciones personalizadas desde utils
@@ -13,6 +13,9 @@ from dash import Dash, html, dcc
 
 # Importa componentes de Bootstrap para Dash
 import dash_bootstrap_components as dbc
+
+# Importa el módulo del gráfico
+import moduls.graf_capturas_censo as gcc
 
 # Crea una instancia de la aplicación Dash con un tema de Bootstrap
 app = Dash(
@@ -32,7 +35,7 @@ resumen = html.P("Usamos Dash para crear aplicaciones web interactivas en Python
 ## Generamos el contenido en una fila Bootstrap
 contenido = html.Div([
     dbc.Row([
-        dbc.Col(html.P("Gráfico de capturas por censo"), width=4),
+        dbc.Col(gcc.graf_capturas_censo(), width=4),
         dbc.Col(html.P("Tabla de Comunidades Autónomas"), width=4),
         dbc.Col(html.P("Mapa de burbujas puertos"), width=4),
     ])
