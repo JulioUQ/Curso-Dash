@@ -14,9 +14,10 @@ from dash import Dash, html, dcc
 # Importa componentes de Bootstrap para Dash
 import dash_bootstrap_components as dbc
 
-# Importa el módulo del gráfico
+# Importa los módulos del Dashboard
 from moduls import graf_capturas_censo as gcc
 from moduls import tabla_desembarques as td
+from moduls import mapa_desembarques as md
 
 # Crea una instancia de la aplicación Dash con un tema de Bootstrap
 app = Dash(
@@ -38,7 +39,7 @@ contenido = html.Div([
     dbc.Row([
         dbc.Col(gcc.graf_capturas_censo(), width=4),
         dbc.Col(td.tabla_d(), width=4),
-        dbc.Col(html.P("Mapa de burbujas puertos"), width=4),
+        dbc.Col(md.mapa(), width=4),
     ])
 ])
 
