@@ -1,0 +1,1 @@
+En este dia comenzamos creando el archivo main.py donde llamaremos a las funciones que daran luz al dashboard, y nos apoyaran para poder trabajar de forma modular.
