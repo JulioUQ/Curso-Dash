@@ -73,36 +73,36 @@
 
 # Estructura de repositorio GitHub - Curso Dash
 
-CursoDash/
-│
-├── README.md               
-├── requirements.txt         
-│
-├── Día_1_Fundamentos/       
-│   ├── README.md            
-│   ├── 01_introduccion.ipynb 
-│   ├── 02_conexion_BBDD.py  
-│   ├── 03_primer_dashboard.py 
-│   ├── 04_layout_dash.ipynb 
-│   └── 05_plotly_visualizaciones.ipynb 
-│
-├── Día_2_Interactividad/    
-│   ├── README.md           
-│   ├── 01_repaso_dia1.ipynb 
-│   ├── 02_callbacks_basicos.py 
-│   ├── 03_callbacks_avanzados.py 
-│   ├── 04_dashboard_completo.py 
-│   └── 05_interactividad_componentes.ipynb 
-│
-├── Día_3_Dashboard_Completo/ 
-│   ├── README.md            
-│   ├── 01_repaso_dias1_2.ipynb 
-│   ├── 02_export_html.py   
-│   ├── 03_export_excel.py   
-│   ├── 04_dashboard_final.py 
-│   └── 05_ejercicio_final.ipynb 
-│
-└── assets/                  
-    ├── logo.png
-    ├── estilos.css
-    └── datos_ejemplo.csv
+CursoDash/  
+│  
+├── README.md                 
+├── requirements.txt           
+│  
+├── Día_1_Fundamentos/         
+│   ├── README.md              
+│   ├── 01_introduccion.ipynb   
+│   ├── 02_conexion_BBDD.py    
+│   ├── 03_primer_dashboard.py   
+│   ├── 04_layout_dash.ipynb   
+│   └── 05_plotly_visualizaciones.ipynb   
+│  
+├── Día_2_Interactividad/      
+│   ├── README.md             
+│   ├── 01_repaso_dia1.ipynb   
+│   ├── 02_callbacks_basicos.py   
+│   ├── 03_callbacks_avanzados.py   
+│   ├── 04_dashboard_completo.py   
+│   └── 05_interactividad_componentes.ipynb   
+│  
+├── Día_3_Dashboard_Completo/   
+│   ├── README.md              
+│   ├── 01_repaso_dias1_2.ipynb   
+│   ├── 02_export_html.py     
+│   ├── 03_export_excel.py     
+│   ├── 04_dashboard_final.py   
+│   └── 05_ejercicio_final.ipynb   
+│  
+└── assets/                    
+    ├── logo.png  
+    ├── estilos.css  
+    └── datos_ejemplo.csv  
