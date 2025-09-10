@@ -15,7 +15,8 @@ from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
 
 # Importa el módulo del gráfico
-import moduls.graf_capturas_censo as gcc
+from moduls import graf_capturas_censo as gcc
+from moduls import tabla_desembarques as td
 
 # Crea una instancia de la aplicación Dash con un tema de Bootstrap
 app = Dash(
@@ -36,7 +37,7 @@ resumen = html.P("Usamos Dash para crear aplicaciones web interactivas en Python
 contenido = html.Div([
     dbc.Row([
         dbc.Col(gcc.graf_capturas_censo(), width=4),
-        dbc.Col(html.P("Tabla de Comunidades Autónomas"), width=4),
+        dbc.Col(td.tabla_d(), width=4),
         dbc.Col(html.P("Mapa de burbujas puertos"), width=4),
     ])
 ])
