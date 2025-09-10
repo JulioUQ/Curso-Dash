@@ -1,0 +1,12 @@
+# base64
+dash
+dash_bootstrap_components
+# datetime
+Flask
+folium
+# io
+pandas
+plotly
+pyodbc
+shapely
+xlsxWriter
