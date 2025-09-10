@@ -1,7 +1,7 @@
 import sys
 import os
 
-# Ruta raíz del proyecto (CURSO DASH)
+# Ruta a Día_1_Fundamentos (dos niveles arriba)
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.append(root_dir)
 

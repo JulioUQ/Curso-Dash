@@ -4,11 +4,9 @@ from dash import dash_table
 import pandas as pd
 import utils.functions_Python_BBDD as f
 
-# Ajuste opcional de ruta raíz (si es estrictamente necesario)
+# Ruta a Día_1_Fundamentos (dos niveles arriba)
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-if root_dir not in sys.path:
-    sys.path.append(root_dir)
-
+sys.path.append(root_dir)
 
 def tabla_d():
     """

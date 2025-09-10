@@ -34,47 +34,8 @@ INNER JOIN [fenix].[Puerto] prt ON A.IdPuerto = prt.Id;
 """
 
 
-import folium
-from folium.plugins import Fullscreen
-from shapely import wkt
-import pandas as pd
-from dash import html
-import utils.functions_Python_BBDD as f
-
-query = f"""
-SELECT 
-    prt.Descripcion, 
-    prt.Coordenadas.STAsText() AS Coordenadas
-FROM (
-    SELECT 
-        bi.IdPuertoBase AS IdPuerto
-    FROM [censo].[BuqueEstado] be
-        INNER JOIN [censo].[BuqueIdentificacion] bi ON be.IdBuque = bi.IdBuque
-        INNER JOIN [fenix].[Puerto] p_in ON bi.IdPuertoBase = p_in.Id
-        INNER JOIN [cat].[Provincia] pr ON pr.Id = p_in.IdProvincia
-    WHERE GETDATE() BETWEEN be.FcEfectoInicial AND be.FcEfectoFinal
-      AND GETDATE() BETWEEN bi.FcEfectoInicial AND bi.FcEfectoFinal
-      AND be.IdTipoEstado IN (1, 5)
-    GROUP BY bi.IdPuertoBase
-) AS A
-INNER JOIN [fenix].[Puerto] prt ON A.IdPuerto = prt.Id;
-"""
-
-
 def mapa():
-    sqlstr = f"""
-        Select prt.Descripcion, prt.Coordenadas.STAsText() as Coordenadas from
-        (select bi.IdPuertoBase IdPuerto from [censo].[BuqueEstado] be inner join [censo].[BuqueIdentificacion] bi on be.IdBuque=bi.idbuque 
-        inner join fenix.Puerto prt on bi.IdPuertoBase=prt.id
-        inner join cat.Provincia pr on pr.id=prt.IdProvincia
-        where  GETDATE() between be.FcEfectoInicial and be.FcEfectoFinal and
-            GETDATE() between bi.FcEfectoInicial and bi.FcEfectoFinal and 
-            idtipoestado in (1,5) 
-        group  by bi.IdPuertoBase) A
-        inner join fenix.Puerto prt on A.IdPuerto=prt.id
-        """
-
-    data = f.ejecutar_consulta_sql(sqlstr, database_key="SGP_SIPE")
+    data = f.ejecutar_consulta_sql(query, database_key="SGP_SIPE")
     data = data.rename(columns= {"Descripcion": "PuertoDesembarque"})
     data = data.dropna()
 
@@ -99,7 +60,13 @@ def mapa():
         coordenada = wkt.loads(row["Coordenadas"])
         
         # Obtener latitud y longitud
-        lat, lon = coordenada.y, coordenada.x # type: ignore
+        lat, lon = coordenada.y, coordenada.x  # type: ignore
+        
+        # Preparar popup con negrita y valor con 2 decimales
+        popup_html = (
+                f'<b>Puerto:</b>{row["PuertoDesembarque"]}<br>'
+                f'<b>Peso desembarque:</b>{row["Peso"] / 1000:.2f} T'
+            )        
         
         # Añadir el marcador en el mapa
         folium.CircleMarker(
@@ -109,8 +76,9 @@ def mapa():
             fill=True,
             fill_color="#3498db",
             fill_opacity=0.6,
-            popup=f'{row["PuertoDesembarque"]}<br>Peso desembarque: {row["Peso"] / 1000} T'
+            popup=popup_html
         ).add_to(mapa)
+
 
     # Mostrar el mapa
     Fullscreen(position="topright").add_to(mapa)
