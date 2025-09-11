@@ -31,7 +31,7 @@ app.layout = dcc.Loading(type= "circle", fullscreen= True, children= [menu, cont
 #------------------------------------------------------------#
 # CALLBACKS (interactividad)
 # Configuramos los callbacks para que la app sea interactiva
-# La funcion debe devolver un elemento por Output, es decir además de contenido devolveria el resto de elemntos
+# La función debe devolver un elemento por Output, es decir además de contenido devolveria el resto de elementos
 #------------------------------------------------------------#
 @app.callback(
     Output("contenido", "children"),
@@ -46,22 +46,22 @@ def update_content(ccaa):
         dbc.Row([
             dbc.Col(dbc.Card([
                 dbc.CardHeader(html.H4("Principales Especies", style= {"text-align": "center"}), style= {"backgroundColor": "#f9feff"}),
-                dbc.CardBody(ge.graf_especies())
+                dbc.CardBody(ge.graf_especies(ccaa))
                 ]), width= 3),
 
             dbc.Col(dbc.Card([
                 dbc.CardHeader(html.H4("Principales puertos de Desembarque", style= {"text-align": "center"}), style= {"backgroundColor": "#f9feff"}),
-                dbc.CardBody(tb.tabla_desembarques())
+                dbc.CardBody(tb.tabla_desembarques(ccaa))
                 ]), width= 4),
 
             dbc.Col(dbc.Card([
                 dbc.CardHeader(html.H4("Principales Provincias de Desembarque", style= {"text-align": "center"}), style= {"backgroundColor": "#f9feff"}),
-                dbc.CardBody(gp.provincias_desembarque())
+                dbc.CardBody(gp.provincias_desembarque(ccaa))
                 ]), width= 5),
         ], style= {"paddingBottom": "20px"}),
         dbc.Row([
             dbc.Card([dbc.CardHeader(html.H4("Variación del Número de Buques", style= {"text-align": "center"}), style= {"backgroundColor": "#f9feff"}),
-                    dbc.CardBody(gb.variacion_buques())
+                    dbc.CardBody(gb.variacion_buques(ccaa))
                     ])
         ])
     ], style= {"padding": "20px"})

@@ -10,8 +10,10 @@ import plotly.express as px
 import functions as f # type: ignore
 
 
-def graf_especies():
+def graf_especies(ccaa):
     data= f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.notas_venta WHERE año = 2024")
+
+    data = data[data["IdCCAA"] == ccaa] # Filtramos por la CCAA seleccionada en el callback
 
     data = data[data["unidadproductiva"] != "Instalación de acuicultura"]
     data = data.groupby(['Especie'])[["peso", "importe"]].sum().reset_index().sort_values(by= "peso", ascending = False)

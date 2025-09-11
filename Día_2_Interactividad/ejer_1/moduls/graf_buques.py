@@ -9,8 +9,10 @@ import plotly.express as px
 
 import functions as f # type: ignore
 
-def variacion_buques():
+def variacion_buques(ccaa):
     data = f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.historico_flota")
+
+    data = data[data["IdCcaa"] == ccaa] # Filtramos por la CCAA seleccionada en el callback
 
     data = data.groupby("año")["buques"].sum().reset_index()
 

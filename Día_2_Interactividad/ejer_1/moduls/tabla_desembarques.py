@@ -8,8 +8,11 @@ import pandas as pd
 
 import functions as f # type: ignore
 
-def tabla_desembarques():
+def tabla_desembarques(ccaa):
     data = f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.ccaa_desembarques WHERE año = 2024")
+
+    data = data[data["idccaa_base"] == ccaa] # Filtramos por la CCAA seleccionada en el callback
+
     data = data.groupby(["PuertoDesembarque", "ProvinciaDesembarque"])[["Peso", "valor"]].sum().reset_index()
 
     data["Peso"] = data["Peso"].round(2)
@@ -25,10 +28,10 @@ def tabla_desembarques():
                                 style_data={"backgroundColor": "#ffffff", "color": "#333333", "fontFamily": "Arial", "fontSize": "13px"},
                                 style_table={"overflowY": "auto"},
                                 style_cell={"minWidth": 100, "width": "auto", "text-align": "left"},
-                                style_data_conditional=[
+                                style_data_conditional=[ # type ignore
                                     {"if": {"row_index": "odd"}, "backgroundColor": "#f8f9f9"},
                                     {"if": {"row_index": "even"}, "backgroundColor": "#ffffff"}
-                                ],
+                                ], # type: ignore
                                 cell_selectable=False,
                                 fixed_rows={"headers": True},
                                 sort_action="native",
