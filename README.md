@@ -22,3 +22,7 @@ Dash está construido sobre un stack tecnológico robusto:
 ### Objetivos del Día 1
 
 El primer día del curso se centra en establecer los fundamentos necesarios para desarrollar dashboards interactivos con Dash, abarcando desde los conceptos teóricos básicos hasta la implementación práctica de un dashboard completo con múltiples componentes.
+
+### Objetivos del Día 2
+
+El segundo día del curso se enfocó en transformar dashboards estáticos en aplicaciones completamente interactivas, implementando filtros dinámicos y comunicación entre componentes mediante el sistema de **callbacks** de Dash.
