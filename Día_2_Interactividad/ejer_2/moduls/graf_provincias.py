@@ -11,7 +11,7 @@ import functions as f # type: ignore
 
 
 
-def provincias_desembarque(ccaa):
+def provincias_desembarque(ccaa, puerto = None):
     
 
     data = f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.ccaa_desembarques")
@@ -19,10 +19,16 @@ def provincias_desembarque(ccaa):
     data = data[data["Año"] == 2024]
     data = data[data["idccaa_base"] == ccaa] # Filtramos por la CCAA seleccionada en el callback
 
+    if puerto is not None:
+        data = data[data["PuertoBase"] == puerto] # Filtramos por el puerto seleccionado en la tabla
+    else:
+        data = data
+
     data = data.groupby("ProvinciaDesembarque")["valor"].sum().reset_index()
 
     bar = px.bar(data, x= "valor", y= "ProvinciaDesembarque")
 
-    contenido = dcc.Graph(id = "barras-provincia", figure = bar)
+    contenido = dcc.Graph(#id = "barras-provincia", 
+                          figure = bar)
    
     return contenido

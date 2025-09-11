@@ -1,6 +1,6 @@
-from dash import Dash, html, dcc
+from dash import Dash, html, dcc, exceptions
 import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State 
 import pandas as pd
 
 from moduls import tabla_desembarques as tb #type: ignore
@@ -46,7 +46,7 @@ def update_content(ccaa):
         dbc.Row([
             dbc.Col(dbc.Card([
                 dbc.CardHeader(html.H4("Principales Especies", style= {"text-align": "center"}), style= {"backgroundColor": "#f9feff"}),
-                dbc.CardBody(ge.graf_especies(ccaa))
+                dbc.CardBody(id= "graf-pie")
                 ]), width= 3),
 
             dbc.Col(dbc.Card([
@@ -56,17 +56,55 @@ def update_content(ccaa):
 
             dbc.Col(dbc.Card([
                 dbc.CardHeader(html.H4("Principales Provincias de Desembarque", style= {"text-align": "center"}), style= {"backgroundColor": "#f9feff"}),
-                dbc.CardBody(gp.provincias_desembarque(ccaa))
+                dbc.CardBody(id = "barras-provincia")
                 ]), width= 5),
         ], style= {"paddingBottom": "20px"}),
         dbc.Row([
             dbc.Card([dbc.CardHeader(html.H4("Variación del Número de Buques", style= {"text-align": "center"}), style= {"backgroundColor": "#f9feff"}),
-                    dbc.CardBody(gb.variacion_buques(ccaa))
+                    dbc.CardBody(id= "line-buques")
                     ])
         ])
     ], style= {"padding": "20px"})
     
     return contenido
+
+
+#-------------------------------------------#
+# Callback para actualizar los tres gráficos
+@app.callback(
+    # Al ser un id de un componente de tarjeta, ponemos children
+    Output("graf-pie", "children"), 
+    Output("barras-provincia", "children"),
+    Output("line-buques", "children"),
+
+    Input("selector-ccaa", "value"), # El input es el mismo para los tres gráficos
+    Input("tabla-desembarques", "selected_rows"), # Input para que se actualice al filtrar la tabla. Esto nos da el indice de la fila seleccionada
+    State("tabla-desembarques", "data") # State para obtener los datos de la tabla, pudiendo asi obtener el puerto base seleccionado
+)   
+
+def update_graphs(ccaa, selected_rows, table_data):
+    if ccaa is None:
+        raise exceptions.PreventUpdate
+    
+    # Si no hay ninguna fila seleccionada, mostramos los datos de la CCAA
+    if not selected_rows or len(selected_rows) == 0:
+        puerto = None
+
+    else: # Si hay una fila seleccionada, obtenemos el puerto base de esa fila
+        row_index = selected_rows[0] # Obtenemos el indice de la fila seleccionada
+        puerto = table_data[row_index]["PuertoBase"] # Obtenemos el puerto base de esa fila
+
+    grafico_especies = ge.graf_especies(ccaa, puerto) # Gráfico de especies
+    grafico_provincias = gp.provincias_desembarque(ccaa, puerto) # Gráfico de provincias
+    grafico_buques = gb.variacion_buques(ccaa, puerto) # Gráfico de buques  
+
+    return grafico_especies, grafico_provincias, grafico_buques
+
+
+
+
+
+
 
 #--------------
 #--------------

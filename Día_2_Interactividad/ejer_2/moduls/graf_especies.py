@@ -10,11 +10,14 @@ import plotly.express as px
 import functions as f # type: ignore
 
 
-def graf_especies(ccaa):
+def graf_especies(value, puerto = None):
     data= f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.ccaa_desembarques WHERE año = 2024")
 
-    data = data[data["idccaa_base"] == ccaa] # Filtramos por la CCAA seleccionada en el callback
-    
+    data = data[data["idccaa_base"] == value]
+
+    if puerto:
+        data = data[data["PuertoBase"] == puerto]
+
     data = data.groupby(['Especie'])[["Peso", "valor"]].sum().reset_index().sort_values(by= "Peso", ascending = False)
 
     total = data["Peso"].sum()
@@ -40,6 +43,6 @@ def graf_especies(ccaa):
         xanchor="center"
     ))
     
-    fig_pie = dcc.Graph(figure= pie, id= "graf-pie", style= {"width": "100%", "height": "100%"})
+    fig_pie = dcc.Graph(figure= pie, id= "pie-especies-fig", style= {"width": "100%", "height": "100%"})
 
     return fig_pie
