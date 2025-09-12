@@ -198,6 +198,7 @@ def update_graphs(ccaa, selected_rows, table_data):
 # Callbacks para las descargas
 @app.callback(
     Output("descargar-datos-excel", "data"), # El output es el id del componente de descarga
+    Output("boton-descarga-datos", "n_clicks"), # Reiniciamos el número de clicks a 0 para que se pueda volver a descargar
     Input("boton-descarga-excel", "n_clicks"), # Cuando el número de clicks cambie, se ejecuta el callback
     Input("selector-ccaa", "value"), # El input es el mismo para los tres gráficos
     Input("tabla-desembarques", "selected_rows"), # Input para que se actualice al filtrar la tabla. Esto nos da el indice de la fila seleccionada
@@ -244,13 +245,8 @@ def descargar_excel(n_clicks, ccaa, selected_rows, table_data):
         writer.book.close() # type: ignore
         output_excel.seek(0) # Por temas de memoria, volvemos al inicio del archivo
 
-    return dcc.send_bytes(output_excel.read(), # type: ignore
-                          filename= f"Datos_{ccaa}.xlsx")  
-
-
-
-
-
+    return (dcc.send_bytes(output_excel.read(), # type: ignore
+                          filename= f"Datos_{ccaa}.xlsx")), 0 # Reiniciamos el número de clicks a 0 para que se pueda volver a descargar
 
 
 #-------------------------------------------#
