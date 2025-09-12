@@ -46,3 +46,22 @@ def graf_especies(value, puerto = None):
     fig_pie = dcc.Graph(figure= pie, id= "pie-especies-fig", style= {"width": "100%", "height": "100%"})
 
     return fig_pie
+
+
+def get_data_especies(value, puerto = None):
+    data= f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.ccaa_desembarques WHERE año = 2024")
+
+    data = data[data["idccaa_base"] == value]
+
+    if puerto:
+        data = data[data["PuertoBase"] == puerto]
+
+    data = data.groupby(['Especie'])[["Peso", "valor"]].sum().reset_index().sort_values(by= "Peso", ascending = False)
+
+    total = data["Peso"].sum()
+    
+    data["porcentaje"] = data["Peso"] / total * 100
+
+    data["especie_agrupada"] = data.apply(lambda row: f"{row["Especie"]}" if row["porcentaje"] >= 5 else "Otros < 5%", axis = 1)
+
+    return data

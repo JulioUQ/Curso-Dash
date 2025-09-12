@@ -11,11 +11,10 @@ import functions as f # type: ignore
 def tabla_desembarques(value):
     data = f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.ccaa_desembarques WHERE año = 2024")
     data = data[data["IdCCAADesembarque"] == value]
-    data = data.groupby(["PuertoDesembarque", "ProvinciaDesembarque"])[["Peso", "valor"]].sum().reset_index()
+    data = data.groupby(["PuertoBase"])[["Peso", "valor"]].sum().reset_index()
 
     data["Peso"] = data["Peso"].round(2)
     data["valor"] = data["valor"].round(2)
-    data["ProvinciaDesembarque"] = data["ProvinciaDesembarque"].str.title().str.replace("De", "de")
 
     data = data.sort_values(by= "valor", ascending= False)
 
@@ -29,14 +28,31 @@ def tabla_desembarques(value):
                                 style_data_conditional=[
                                     {"if": {"row_index": "odd"}, "backgroundColor": "#f8f9f9"},
                                     {"if": {"row_index": "even"}, "backgroundColor": "#ffffff"}
-                                ],
+                                ], # type: ignore
                                 cell_selectable=False,
                                 fixed_rows={"headers": True},
                                 sort_action="native",
                                 filter_action= "native",
-                                page_size=12
+                                page_size=12,
+                                row_selectable = "single"
                                  )
 
     return tabla
 
 #-------------------------------------------#
+
+def get_tabla_desembarques(value, puerto = None):
+    data = f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.ccaa_desembarques WHERE año = 2024")
+    data = data[data["IdCCAADesembarque"] == value]
+
+    if puerto:
+        data = data[data["PuertoBase"] == puerto]
+        
+    data = data.groupby(["PuertoBase"])[["Peso", "valor"]].sum().reset_index()
+
+    data["Peso"] = data["Peso"].round(2)
+    data["valor"] = data["valor"].round(2)
+
+    data = data.sort_values(by= "valor", ascending= False)
+
+    return data
