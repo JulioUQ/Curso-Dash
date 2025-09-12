@@ -41,18 +41,21 @@ def tabla_desembarques(value):
 
 #-------------------------------------------#
 
-def get_tabla_desembarques(value, puerto = None):
+def get_data_desembarques(value, puerto = None, informe = False):
     data = f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.ccaa_desembarques WHERE año = 2024")
     data = data[data["IdCCAADesembarque"] == value]
 
     if puerto:
         data = data[data["PuertoBase"] == puerto]
-        
+
     data = data.groupby(["PuertoBase"])[["Peso", "valor"]].sum().reset_index()
 
     data["Peso"] = data["Peso"].round(2)
     data["valor"] = data["valor"].round(2)
 
     data = data.sort_values(by= "valor", ascending= False)
+
+    if informe == True:
+        data = data.nlargest(10, "Peso")
 
     return data

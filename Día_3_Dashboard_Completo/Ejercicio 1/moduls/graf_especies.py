@@ -10,7 +10,7 @@ import plotly.express as px
 import functions as f # type: ignore
 
 
-def graf_especies(value, puerto = None):
+def graf_especies(value, puerto = None, html = False):
     data= f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.ccaa_desembarques WHERE año = 2024")
 
     data = data[data["idccaa_base"] == value]
@@ -45,10 +45,13 @@ def graf_especies(value, puerto = None):
     
     fig_pie = dcc.Graph(figure= pie, id= "pie-especies-fig", style= {"width": "100%", "height": "100%"})
 
+    if html == True:
+        fig_pie = pie.to_html(full_html = True)
+
     return fig_pie
 
 
-def get_data_especies(value, puerto = None):
+def get_data_especies(value, puerto = None, informe = False):
     data= f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.ccaa_desembarques WHERE año = 2024")
 
     data = data[data["idccaa_base"] == value]
@@ -59,9 +62,12 @@ def get_data_especies(value, puerto = None):
     data = data.groupby(['Especie'])[["Peso", "valor"]].sum().reset_index().sort_values(by= "Peso", ascending = False)
 
     total = data["Peso"].sum()
-    
     data["porcentaje"] = data["Peso"] / total * 100
 
     data["especie_agrupada"] = data.apply(lambda row: f"{row["Especie"]}" if row["porcentaje"] >= 5 else "Otros < 5%", axis = 1)
+
+    if informe == True:
+        data = data.nlargest(10, "Peso")
+
 
     return data

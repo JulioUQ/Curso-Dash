@@ -9,35 +9,31 @@ import plotly.express as px
 
 import functions as f # type: ignore
 
-def variacion_buques(ccaa, puerto= None):
+def variacion_buques(value, puerto = None, html = False):
     data = f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.historico_flota")
+    data = data[data["IdCcaa"] == value]
 
-    data = data[data["IdCcaa"] == ccaa] # Filtramos por la CCAA seleccionada en el callback
-
-    if puerto is not None:
-        data = data[data["puerto"] == puerto] # Filtramos por el puerto seleccionado en la tabla
-    else:
-        data = data
+    if puerto:
+        data = data[data["puerto"] == puerto]
 
     data = data.groupby("año")["buques"].sum().reset_index()
 
     line = px.line(data, x= "año", y= "buques")
 
-    contenido = dcc.Graph(#id= "line-buques", 
-                          figure= line)
+    contenido = dcc.Graph(id= "line-buques-fig", figure= line)
+
+    if html == True:
+        contenido = line.to_html(full_html = True)
 
     return contenido
 
 
-def get_data_buques(ccaa, puerto= None):
+def get_data_buques(value, puerto = None):
     data = f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.historico_flota")
+    data = data[data["IdCcaa"] == value]
 
-    data = data[data["IdCcaa"] == ccaa] # Filtramos por la CCAA seleccionada en el callback
-
-    if puerto is not None:
-        data = data[data["puerto"] == puerto] # Filtramos por el puerto seleccionado en la tabla
-    else:
-        data = data
+    if puerto:
+        data = data[data["puerto"] == puerto]
 
     data = data.groupby("año")["buques"].sum().reset_index()
 

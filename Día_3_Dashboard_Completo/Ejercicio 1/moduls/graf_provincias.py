@@ -10,39 +10,36 @@ import plotly.express as px
 import functions as f # type: ignore
 
 
-def provincias_desembarque(ccaa, puerto = None):
-    
+
+def provincias_desembarque(value, puerto = None, html = False):
+
     data = f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.ccaa_desembarques")
-
     data = data[data["Año"] == 2024]
-    data = data[data["idccaa_base"] == ccaa] # Filtramos por la CCAA seleccionada en el callback
+    data = data[data["idccaa_base"] == value]
 
-    if puerto is not None:
-        data = data[data["PuertoBase"] == puerto] # Filtramos por el puerto seleccionado en la tabla
-    else:
-        data = data
+    if puerto:
+        data = data[data["PuertoBase"] == puerto]
 
     data = data.groupby("ProvinciaDesembarque")["valor"].sum().reset_index()
 
     bar = px.bar(data, x= "valor", y= "ProvinciaDesembarque")
 
-    contenido = dcc.Graph(#id = "barras-provincia", 
-                          figure = bar)
+    contenido = dcc.Graph(id = "barras-provincias-fig", figure = bar)
+
+    if html == True:
+        contenido = bar.to_html(full_html = True)
    
     return contenido
 
 
-def get_data_provincias_desembarque(ccaa, puerto = None):
-    
+def get_data_provicias(value, puerto = None):
+
     data = f.consulta("SELECT * FROM SGP_CUADROSMANDO.cm.ccaa_desembarques")
-
     data = data[data["Año"] == 2024]
-    data = data[data["idccaa_base"] == ccaa] # Filtramos por la CCAA seleccionada en el callback
+    data = data[data["idccaa_base"] == value]
 
-    if puerto is not None:
-        data = data[data["PuertoBase"] == puerto] # Filtramos por el puerto seleccionado en la tabla
-    else:
-        data = data
+    if puerto:
+        data = data[data["PuertoBase"] == puerto]
 
     data = data.groupby("ProvinciaDesembarque")["valor"].sum().reset_index()
    
