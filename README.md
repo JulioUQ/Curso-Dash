@@ -26,3 +26,7 @@ El primer día del curso se centra en establecer los fundamentos necesarios para
 ### Objetivos del Día 2
 
 El segundo día del curso se enfocó en transformar dashboards estáticos en aplicaciones completamente interactivas, implementando filtros dinámicos y comunicación entre componentes mediante el sistema de **callbacks** de Dash.
+
+### Objetivos del Día 3
+
+El tercer día del curso se enfocó en completar el dashboard con funcionalidades de descarga de informes en html y en excel.
