@@ -1,9 +1,5 @@
 # 📊 Apuntes Día 2 - Interactividad y Callbacks en Dash
 
-_Curso de Dashboards con Python_
-
----
-
 ## 🎯 Objetivos del Día 2
 
 El segundo día del curso se enfocó en transformar dashboards estáticos en aplicaciones completamente interactivas, implementando filtros dinámicos y comunicación entre componentes mediante el sistema de **callbacks** de Dash.
